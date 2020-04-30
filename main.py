@@ -24,6 +24,27 @@ Calculates all needed points and triangles for a cylinder
 """
 
 
+def calc_triangle_normal(p1: Point, p2: Point, p3: Point):
+    uvec = {
+        "x": p2.getx() - p1.getx(),
+        "y": p2.gety() - p1.gety(),
+        "z": p2.getz() - p1.getz()
+    }
+    vvec = {
+        "x": p3.getx() - p1.getx(),
+        "y": p3.gety() - p1.gety(),
+        "z": p3.getz() - p1.getz()
+    }
+
+    nvec = {
+        "x": uvec['y'] * vvec['z'] - uvec['z'] * vvec['y'],
+        "y": uvec['z'] * vvec['x'] - uvec['x'] * vvec['z'],
+        "z": uvec['x'] * vvec['y'] - uvec['y'] * vvec['x']
+    }
+
+    return nvec
+
+
 def calcpoints(r, height, steps):
     degree = 0
     pamount = round(360 / steps)
@@ -41,10 +62,12 @@ def calcpoints(r, height, steps):
     for p in range(0, len(points)):
         if p == len(points) - 1:
             upperpoint = Point(points[p].getx(), points[p].gety(), height)
-            trarr.append(Triangle(points[p], points[0], upperpoint, 0, 0, 0))
+            nvec = calc_triangle_normal(points[p], points[0], upperpoint)
+            trarr.append(Triangle(points[p], points[0], upperpoint, nvec['x'], nvec['y'], nvec['z']))
         else:
             upperpoint = Point(points[p].getx(), points[p].gety(), height)
-            trarr.append(Triangle(points[p], points[p + 1], upperpoint, 0, 0, 0))
+            nvec = calc_triangle_normal(points[p], points[p + 1], upperpoint)
+            trarr.append(Triangle(points[p], points[p + 1], upperpoint, nvec['x'], nvec['y'], nvec['z']))
 
     # generate upper triangles (sides)
     degree = 0
@@ -57,10 +80,12 @@ def calcpoints(r, height, steps):
     for p in range(0, len(upoints)):
         if p == len(upoints) - 1:
             upperpoint = Point(upoints[0].getx(), upoints[0].gety(), 0)
-            trarr.append(Triangle(upoints[p], upoints[0], upperpoint, 0, 0, 0))
+            nvec = calc_triangle_normal(upoints[p], upoints[0], upperpoint)
+            trarr.append(Triangle(upoints[p], upoints[0], upperpoint, nvec['x'], nvec['y'], nvec['z']))
         else:
             upperpoint = Point(upoints[p + 1].getx(), upoints[p + 1].gety(), 0)
-            trarr.append(Triangle(upoints[p], upoints[p + 1], upperpoint, 0, 0, 0))
+            nvec = calc_triangle_normal(upoints[p], upoints[p + 1], upperpoint)
+            trarr.append(Triangle(upoints[p], upoints[p + 1], upperpoint, nvec['x'], nvec['y'], nvec['z']))
 
     # generate top and bottom "plates"
     for i in range(0, 2):
@@ -74,17 +99,20 @@ def calcpoints(r, height, steps):
         for p in range(1, round(len(curp)/2)):
             mirrorp = Point(curp[p].getx(), curp[p].gety() * -1, localheight)
             nextp = curp[p + 1]
-            trarr.append(Triangle(curp[p], nextp, mirrorp, 0, 0, 0))
+            nvec = calc_triangle_normal(curp[p], nextp, mirrorp)
+            trarr.append(Triangle(curp[p], nextp, mirrorp, nvec['x'], nvec['y'], nvec['z']))
 
         for p in range(round(len(curp) / 2) + 1, round(len(curp))):
             if p == len(curp) - 1:
                 mirrorp = Point(curp[p].getx(), curp[p].gety() * -1, localheight)
                 nextp = curp[0]
-                trarr.append(Triangle(curp[p], nextp, mirrorp, 0, 0, 0))
+                nvec = calc_triangle_normal(curp[p], nextp, mirrorp)
+                trarr.append(Triangle(curp[p], nextp, mirrorp, nvec['x'], nvec['y'], nvec['z']))
             else:
                 mirrorp = Point(curp[p].getx(), curp[p].gety() * -1, localheight)
                 nextp = curp[p + 1]
-                trarr.append(Triangle(curp[p], nextp, mirrorp, 0, 0, 0))
+                nvec = calc_triangle_normal(curp[p], nextp, mirrorp)
+                trarr.append(Triangle(curp[p], nextp, mirrorp, nvec['x'], nvec['y'], nvec['z']))
 
     for t in trarr:
         tstr += t.tostl()
