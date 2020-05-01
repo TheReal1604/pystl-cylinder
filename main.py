@@ -163,12 +163,25 @@ if __name__ == "__main__":
                                                                    "(aka how much points are generated)"
                                                                    " OPTIONS: ultrahigh, high, mid, low, cube")
     argparser.add_argument('-he', '--height', required=False)
+    argparser.add_argument('-aq', '--all-qualities', required=False, help="generate multiple stl files - "
+                                                                          "a sample from each quality setting",
+                           action="store_true")
 
     args = argparser.parse_args()
 
-    f = open("demo.stl", "w")
-    f.write("solid demo\n")
-    f.write(calcpoints(int(args.radius), int(args.height), qualitytodeg(args.quality)))
-    f.write("endsolid demo")
-    f.close()
+    if args.all_qualities:
+        print("All qualities requested, processing cylinders.")
+        for q in ["ultrahigh", "high", "mid", "low", "cube"]:
+            print("Processing {} quality setting.".format(q))
+            f = open("{}.stl".format(q), "w")
+            f.write("solid {}\n".format(q))
+            f.write(calcpoints(int(args.radius), int(args.height), qualitytodeg(q)))
+            f.write("endsolid {}".format(q))
+            f.close()
+    else:
+        f = open("demo.stl", "w")
+        f.write("solid demo\n")
+        f.write(calcpoints(int(args.radius), int(args.height), qualitytodeg(args.quality)))
+        f.write("endsolid demo")
+        f.close()
 
