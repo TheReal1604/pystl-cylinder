@@ -18,13 +18,13 @@ class Triangle:
         return self.points
 
     def tostl(self):
-        return "facet normal {} {} {}\n" \
-               "\touter loop\n" \
-               "\t\tvertex {} {} {}\n" \
-               "\t\tvertex {} {} {}\n" \
-               "\t\tvertex {} {} {}\n" \
-               "\tendloop\n" \
-               "endfacet\n".format(self.facet[0], self.facet[1], self.facet[2],
+        return "  facet normal {} {} {}\n" \
+               "    outer loop\n" \
+               "      vertex {} {} {}\n" \
+               "      vertex {} {} {}\n" \
+               "      vertex {} {} {}\n" \
+               "    endloop\n" \
+               "  endfacet\n".format(self.facet[0], self.facet[1], self.facet[2],
                                    self.points[0].getx(),self.points[0].gety(), self.points[0].getz(),
                                  self.points[1].getx(), self.points[1].gety(), self.points[1].getz(),
                                  self.points[2].getx(), self.points[2].gety(), self.points[2].getz())
