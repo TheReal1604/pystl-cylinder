@@ -5,7 +5,8 @@ import argparse
 
 
 """
-Calculates x,y of the corresponding point
+Calculates x,y of the corresponding point of the outer circles
+
 @:param r radius
 @:param degree
 """
@@ -16,11 +17,11 @@ def calc_coordinates(r, degree):
 
 
 """
-Calculates all needed points and triangles for a cylinder
+Calculates the stl "facet normal" of a given triangle (cross product)
 
-@:param r radius
-@:param trarr array of triangles
-@
+@:param p1 Point 1 of the triangle
+@:param p2 Point 2 of the triangle
+@:param p3 Point 3 of the triangle
 """
 
 
@@ -37,12 +38,21 @@ def calc_triangle_normal(p1: Point, p2: Point, p3: Point):
     }
 
     nvec = {
-        "x": uvec['y'] * vvec['z'] - uvec['z'] * vvec['y'],
-        "y": uvec['z'] * vvec['x'] - uvec['x'] * vvec['z'],
-        "z": uvec['x'] * vvec['y'] - uvec['y'] * vvec['x']
+        "x": (uvec['y'] * vvec['z']) - (uvec['z'] * vvec['y']),
+        "y": (uvec['z'] * vvec['x']) - (uvec['x'] * vvec['z']),
+        "z": (uvec['x'] * vvec['y']) - (uvec['y'] * vvec['x'])
     }
 
     return nvec
+
+
+"""
+Calculates all needed points and triangles for a cylinder
+
+@:param r radius
+@:param trarr array of triangles
+@
+"""
 
 
 def calcpoints(r, height, steps):
@@ -60,14 +70,11 @@ def calcpoints(r, height, steps):
         points.append(Point(coords[0], coords[1], 0))
 
     for p in range(0, len(points)):
+        upperpoint = Point(points[p].getx(), points[p].gety(), height)
         if p == len(points) - 1:
-            upperpoint = Point(points[p].getx(), points[p].gety(), height)
-            nvec = calc_triangle_normal(points[p], points[0], upperpoint)
-            trarr.append(Triangle(points[p], points[0], upperpoint, nvec['x'], nvec['y'], nvec['z']))
+            appendtriangle(trarr, points[p], points[0], upperpoint, True)
         else:
-            upperpoint = Point(points[p].getx(), points[p].gety(), height)
-            nvec = calc_triangle_normal(points[p], points[p + 1], upperpoint)
-            trarr.append(Triangle(points[p], points[p + 1], upperpoint, nvec['x'], nvec['y'], nvec['z']))
+            appendtriangle(trarr, points[p], points[p + 1], upperpoint, True)
 
     # generate upper triangles (sides)
     degree = 0
@@ -80,12 +87,10 @@ def calcpoints(r, height, steps):
     for p in range(0, len(upoints)):
         if p == len(upoints) - 1:
             upperpoint = Point(upoints[0].getx(), upoints[0].gety(), 0)
-            nvec = calc_triangle_normal(upoints[p], upoints[0], upperpoint)
-            trarr.append(Triangle(upoints[p], upoints[0], upperpoint, nvec['x'], nvec['y'], nvec['z']))
+            appendtriangle(trarr, upoints[p], upoints[0], upperpoint, False)
         else:
             upperpoint = Point(upoints[p + 1].getx(), upoints[p + 1].gety(), 0)
-            nvec = calc_triangle_normal(upoints[p], upoints[p + 1], upperpoint)
-            trarr.append(Triangle(upoints[p], upoints[p + 1], upperpoint, nvec['x'], nvec['y'], nvec['z']))
+            appendtriangle(trarr, upoints[p], upoints[p + 1], upperpoint, False)
 
     # generate top and bottom "plates"
     for i in range(0, 2):
@@ -99,20 +104,15 @@ def calcpoints(r, height, steps):
         for p in range(1, round(len(curp)/2)):
             mirrorp = Point(curp[p].getx(), curp[p].gety() * -1, localheight)
             nextp = curp[p + 1]
-            nvec = calc_triangle_normal(curp[p], nextp, mirrorp)
-            trarr.append(Triangle(curp[p], nextp, mirrorp, nvec['x'], nvec['y'], nvec['z']))
+            appendtriangle(trarr, curp[p], nextp, mirrorp, bool(i))
 
         for p in range(round(len(curp) / 2) + 1, round(len(curp))):
+            mirrorp = Point(curp[p].getx(), curp[p].gety() * -1, localheight)
             if p == len(curp) - 1:
-                mirrorp = Point(curp[p].getx(), curp[p].gety() * -1, localheight)
                 nextp = curp[0]
-                nvec = calc_triangle_normal(curp[p], nextp, mirrorp)
-                trarr.append(Triangle(curp[p], nextp, mirrorp, nvec['x'], nvec['y'], nvec['z']))
             else:
-                mirrorp = Point(curp[p].getx(), curp[p].gety() * -1, localheight)
                 nextp = curp[p + 1]
-                nvec = calc_triangle_normal(curp[p], nextp, mirrorp)
-                trarr.append(Triangle(curp[p], nextp, mirrorp, nvec['x'], nvec['y'], nvec['z']))
+            appendtriangle(trarr, curp[p], nextp, mirrorp, bool(i))
 
     for t in trarr:
         tstr += t.tostl()
@@ -120,6 +120,23 @@ def calcpoints(r, height, steps):
     print("Processed {} triangles, {} points.".format(len(trarr), len(upoints) + len(points)))
 
     return tstr
+
+
+def appendtriangle(trcontainer, p1, p2, p3, ccw: bool):
+    nvec = calc_triangle_normal(p1, p2, p3)
+    if ccw:
+        trcontainer.append(Triangle(p1, p2, p3, nvec['x'], nvec['y'], nvec['z']))
+    else:
+        trcontainer.append(Triangle(p3, p2, p1, nvec['x'], nvec['y'], nvec['z']))
+
+
+"""
+Maps a string to a distance in degree between the outer points of the cylinder
+=> Lower distance = more points generated
+
+@:param ql String which represents choosen quality of the stl file
+@:return int which represents the distance between outer points of the cylinder sides
+"""
 
 
 def qualitytodeg(ql):
