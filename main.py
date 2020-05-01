@@ -123,10 +123,12 @@ def calcpoints(r, height, steps):
 
 
 def appendtriangle(trcontainer, p1, p2, p3, ccw: bool):
-    nvec = calc_triangle_normal(p1, p2, p3)
+
     if ccw:
+        nvec = calc_triangle_normal(p1, p2, p3)
         trcontainer.append(Triangle(p1, p2, p3, nvec['x'], nvec['y'], nvec['z']))
     else:
+        nvec = calc_triangle_normal(p3, p2, p1)
         trcontainer.append(Triangle(p3, p2, p1, nvec['x'], nvec['y'], nvec['z']))
 
 
