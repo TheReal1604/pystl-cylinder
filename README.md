@@ -30,6 +30,6 @@ at the location the script was executed.
 - outputs a `demo.stl` in quality setting "high" of a cylinder with a radius of 3
 and a height of 5
 
-`python3 main.py -rl 5 -ru 3 -he 10 `
+`python3 main.py -rl 5 -ru 3 -he 10 --all-qualities `
 - outputs `cube.stl, low.stl, mid.stl, high.stl, ultrahigh.stl` of a cylinder with a lower radius of 5, upper radius of 3 
 and a height of 10
