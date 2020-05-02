@@ -55,7 +55,7 @@ Calculates all needed points and triangles for a cylinder
 """
 
 
-def calcpoints(r, height, steps):
+def calcpoints(r, ru, height, steps):
     degree = 0
     pamount = round(360 / steps)
     points = []
@@ -66,11 +66,14 @@ def calcpoints(r, height, steps):
     # generate lower triangles (sides)
     for p in range(0, pamount):
         coords = calc_coordinates(r, degree)
+        points.append(Point(coords[0], coords[1], 0, degree))
         degree += steps
-        points.append(Point(coords[0], coords[1], 0))
 
     for p in range(0, len(points)):
-        upperpoint = Point(points[p].getx(), points[p].gety(), height)
+        #upperpoint = Point(points[p].getx(), points[p].gety(), height)
+        coordupper = calc_coordinates(ru, points[p].getdegree())
+        upperpoint = Point(coordupper[0], coordupper[1], height)
+
         if p == len(points) - 1:
             appendtriangle(trarr, points[p], points[0], upperpoint, True)
         else:
@@ -80,16 +83,18 @@ def calcpoints(r, height, steps):
     degree = 0
 
     for p in range(0, pamount):
-        coords = calc_coordinates(r, degree)
+        coords = calc_coordinates(ru, degree)
+        upoints.append(Point(coords[0], coords[1], height, degree))
         degree += steps
-        upoints.append(Point(coords[0], coords[1], height))
 
     for p in range(0, len(upoints)):
         if p == len(upoints) - 1:
-            upperpoint = Point(upoints[0].getx(), upoints[0].gety(), 0)
+            coordupper = calc_coordinates(r, upoints[0].getdegree())
+            upperpoint = Point(coordupper[0], coordupper[1], 0)
             appendtriangle(trarr, upoints[p], upoints[0], upperpoint, False)
         else:
-            upperpoint = Point(upoints[p + 1].getx(), upoints[p + 1].gety(), 0)
+            coordupper = calc_coordinates(r, upoints[p + 1].getdegree())
+            upperpoint = Point(coordupper[0], coordupper[1], 0)
             appendtriangle(trarr, upoints[p], upoints[p + 1], upperpoint, False)
 
     # generate top and bottom "plates"
@@ -123,7 +128,6 @@ def calcpoints(r, height, steps):
 
 
 def appendtriangle(trcontainer, p1, p2, p3, ccw: bool):
-
     if ccw:
         nvec = calc_triangle_normal(p1, p2, p3)
         trcontainer.append(Triangle(p1, p2, p3, nvec['x'], nvec['y'], nvec['z']))
@@ -158,7 +162,8 @@ def qualitytodeg(ql):
 
 if __name__ == "__main__":
     argparser = argparse.ArgumentParser()
-    argparser.add_argument('-r', '--radius', required=True)
+    argparser.add_argument('-rl', '--lower-radius', required=True)
+    argparser.add_argument('-ru', '--upper-radius', required=True)
     argparser.add_argument('-q', '--quality', required=False, help="A parameter to switch between qualitys. "
                                                                    "(aka how much points are generated)"
                                                                    " OPTIONS: ultrahigh, high, mid, low, cube")
@@ -175,13 +180,13 @@ if __name__ == "__main__":
             print("Processing {} quality setting.".format(q))
             f = open("{}.stl".format(q), "w")
             f.write("solid {}\n".format(q))
-            f.write(calcpoints(int(args.radius), int(args.height), qualitytodeg(q)))
+            f.write(calcpoints(int(args.lower_radius), int(args.upper_radius), int(args.height), qualitytodeg(q)))
             f.write("endsolid {}".format(q))
             f.close()
     else:
         f = open("demo.stl", "w")
         f.write("solid demo\n")
-        f.write(calcpoints(int(args.radius), int(args.height), qualitytodeg(args.quality)))
+        f.write(calcpoints(int(args.lower_radius), int(args.upper_radius), int(args.height), qualitytodeg(args.quality)))
         f.write("endsolid demo")
         f.close()
 
