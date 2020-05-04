@@ -127,6 +127,20 @@ def calcpoints(r, ru, height, steps):
     return tstr
 
 
+"""
+Creates a triangle object and appends it to the given array. Its important for the direction of the triangle how the
+points are added to it.
+
+@:param trcontainer Array to append to
+@:param p1 point1
+@:param p2 point2
+@:param p3 point3
+@:param ccw Modifies how the triangle points are added to the object. 
+
+
+"""
+
+
 def appendtriangle(trcontainer, p1, p2, p3, ccw: bool):
     if ccw:
         nvec = calc_triangle_normal(p1, p2, p3)
