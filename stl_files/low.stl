@@ -1,86 +1,86 @@
 solid low
-  facet normal 25.981 15.0 -7.7943
+  facet normal 25.981 15.0 -5.1962
     outer loop
       vertex 3.0 0.0 0
       vertex 1.5 2.5981 0
-      vertex 6.0 0.0 10
+      vertex 5.0 0.0 10
     endloop
   endfacet
-  facet normal 0.0 30.0 -7.7943
+  facet normal 0.0 30.0 -5.196
     outer loop
       vertex 1.5 2.5981 0
       vertex -1.5 2.5981 0
-      vertex 3.0 5.1962 10
+      vertex 2.5 4.3301 10
     endloop
   endfacet
-  facet normal -25.981 15.0 -7.7943
+  facet normal -25.981 15.0 -5.1960999999999995
     outer loop
       vertex -1.5 2.5981 0
       vertex -3.0 0.0 0
-      vertex -3.0 5.1962 10
+      vertex -2.5 4.3301 10
     endloop
   endfacet
-  facet normal -25.981 -15.0 -7.7943
+  facet normal -25.981 -15.0 -5.1962
     outer loop
       vertex -3.0 0.0 0
       vertex -1.5 -2.5981 0
-      vertex -6.0 0.0 10
+      vertex -5.0 0.0 10
     endloop
   endfacet
-  facet normal 0.0 -30.0 -7.7943
+  facet normal 0.0 -30.0 -5.196
     outer loop
       vertex -1.5 -2.5981 0
       vertex 1.5 -2.5981 0
-      vertex -3.0 -5.1962 10
+      vertex -2.5 -4.3301 10
     endloop
   endfacet
-  facet normal 25.981 -15.0 -7.7943
+  facet normal 25.981 -15.0 -5.1960999999999995
     outer loop
       vertex 1.5 -2.5981 0
       vertex 3.0 0.0 0
-      vertex 3.0 -5.1962 10
+      vertex 2.5 -4.3301 10
     endloop
   endfacet
-  facet normal 51.962 30.0 -15.5886
+  facet normal 43.301 25.0 -8.6601
     outer loop
       vertex 1.5 2.5981 0
-      vertex 3.0 5.1962 10
-      vertex 6.0 0.0 10
+      vertex 2.5 4.3301 10
+      vertex 5.0 0.0 10
     endloop
   endfacet
-  facet normal 0.0 60.0 -15.5886
+  facet normal 0.0 50.0 -8.659999999999998
     outer loop
       vertex -1.5 2.5981 0
-      vertex -3.0 5.1962 10
-      vertex 3.0 5.1962 10
+      vertex -2.5 4.3301 10
+      vertex 2.5 4.3301 10
     endloop
   endfacet
-  facet normal -51.962 30.0 -15.5886
+  facet normal -43.301 25.0 -8.6602
     outer loop
       vertex -3.0 0.0 0
-      vertex -6.0 0.0 10
-      vertex -3.0 5.1962 10
+      vertex -5.0 0.0 10
+      vertex -2.5 4.3301 10
     endloop
   endfacet
-  facet normal -51.962 -30.0 -15.5886
+  facet normal -43.301 -25.0 -8.6601
     outer loop
       vertex -1.5 -2.5981 0
-      vertex -3.0 -5.1962 10
-      vertex -6.0 0.0 10
+      vertex -2.5 -4.3301 10
+      vertex -5.0 0.0 10
     endloop
   endfacet
-  facet normal 0.0 -60.0 -15.5886
+  facet normal 0.0 -50.0 -8.659999999999998
     outer loop
       vertex 1.5 -2.5981 0
-      vertex 3.0 -5.1962 10
-      vertex -3.0 -5.1962 10
+      vertex 2.5 -4.3301 10
+      vertex -2.5 -4.3301 10
     endloop
   endfacet
-  facet normal 51.962 -30.0 -15.5886
+  facet normal 43.301 -25.0 -8.6602
     outer loop
       vertex 3.0 0.0 0
-      vertex 6.0 0.0 10
-      vertex 3.0 -5.1962 10
+      vertex 5.0 0.0 10
+      vertex 2.5 -4.3301 10
     endloop
   endfacet
   facet normal 0.0 0.0 -15.5886
@@ -111,32 +111,32 @@ solid low
       vertex 1.5 -2.5981 0
     endloop
   endfacet
-  facet normal 0.0 0.0 62.3544
+  facet normal 0.0 0.0 43.301
     outer loop
-      vertex 3.0 5.1962 10
-      vertex -3.0 5.1962 10
-      vertex 3.0 -5.1962 10
+      vertex 2.5 4.3301 10
+      vertex -2.5 4.3301 10
+      vertex 2.5 -4.3301 10
     endloop
   endfacet
-  facet normal 0.0 0.0 31.1772
+  facet normal 0.0 0.0 21.6505
     outer loop
-      vertex -3.0 5.1962 10
-      vertex -6.0 0.0 10
-      vertex -3.0 -5.1962 10
+      vertex -2.5 4.3301 10
+      vertex -5.0 0.0 10
+      vertex -2.5 -4.3301 10
     endloop
   endfacet
-  facet normal 0.0 0.0 62.3544
+  facet normal 0.0 0.0 43.301
     outer loop
-      vertex -3.0 -5.1962 10
-      vertex 3.0 -5.1962 10
-      vertex -3.0 5.1962 10
+      vertex -2.5 -4.3301 10
+      vertex 2.5 -4.3301 10
+      vertex -2.5 4.3301 10
     endloop
   endfacet
-  facet normal 0.0 0.0 31.1772
+  facet normal 0.0 0.0 21.6505
     outer loop
-      vertex 3.0 -5.1962 10
-      vertex 6.0 0.0 10
-      vertex 3.0 5.1962 10
+      vertex 2.5 -4.3301 10
+      vertex 5.0 0.0 10
+      vertex 2.5 4.3301 10
     endloop
   endfacet
 endsolid low
