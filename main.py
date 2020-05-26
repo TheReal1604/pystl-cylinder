@@ -50,8 +50,9 @@ def calc_triangle_normal(p1: Point, p2: Point, p3: Point):
 Calculates all needed points and triangles for a cylinder
 
 @:param r radius
-@:param trarr array of triangles
-@
+@:param ru upper radius
+@:param height height of the cylinder
+@:param steps points per circle (top and bottom plates)
 """
 
 
@@ -136,8 +137,6 @@ points are added to it.
 @:param p2 point2
 @:param p3 point3
 @:param ccw Modifies how the triangle points are added to the object. 
-
-
 """
 
 
@@ -174,6 +173,9 @@ def qualitytodeg(ql):
         return 30
 
 
+"""
+Main
+"""
 if __name__ == "__main__":
     argparser = argparse.ArgumentParser()
     argparser.add_argument('-rl', '--lower-radius', required=True)
