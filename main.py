@@ -4,28 +4,25 @@ from math import cos, sin, radians
 import argparse
 
 
-"""
-Calculates x,y of the corresponding point of the outer circles
-
-@:param r radius
-@:param degree
-"""
-
-
 def calc_coordinates(r, degree):
+    """
+    Calculates x,y of the corresponding point of the outer circles
+
+    @:param r radius
+    @:param degree
+    """
     return [round((0 + (r * cos(radians(degree)))), 4), round((0 + (r * sin(radians(degree)))), 4)]
 
 
-"""
-Calculates the stl "facet normal" of a given triangle (cross product)
-
-@:param p1 Point 1 of the triangle
-@:param p2 Point 2 of the triangle
-@:param p3 Point 3 of the triangle
-"""
-
-
 def calc_triangle_normal(p1: Point, p2: Point, p3: Point):
+    """
+    Calculates the stl "facet normal" of a given triangle (cross product)
+
+    @:param p1 Point 1 of the triangle
+    @:param p2 Point 2 of the triangle
+    @:param p3 Point 3 of the triangle
+    """
+
     uvec = {
         "x": p2.getx() - p1.getx(),
         "y": p2.gety() - p1.gety(),
@@ -46,17 +43,16 @@ def calc_triangle_normal(p1: Point, p2: Point, p3: Point):
     return nvec
 
 
-"""
-Calculates all needed points and triangles for a cylinder
-
-@:param r radius
-@:param ru upper radius
-@:param height height of the cylinder
-@:param steps points per circle (top and bottom plates)
-"""
-
-
 def calcpoints(r, ru, height, steps):
+    """
+    Calculates all needed points and triangles for a cylinder
+
+    @:param r radius
+    @:param ru upper radius
+    @:param height height of the cylinder
+    @:param steps points per circle (top and bottom plates)
+    """
+
     degree = 0
     pamount = round(360 / steps)
     points = []
@@ -71,7 +67,6 @@ def calcpoints(r, ru, height, steps):
         degree += steps
 
     for p in range(0, len(points)):
-        #upperpoint = Point(points[p].getx(), points[p].gety(), height)
         coordupper = calc_coordinates(ru, points[p].getdegree())
         upperpoint = Point(coordupper[0], coordupper[1], height)
 
@@ -128,19 +123,18 @@ def calcpoints(r, ru, height, steps):
     return tstr
 
 
-"""
-Creates a triangle object and appends it to the given array. Its important for the direction of the triangle how the
-points are added to it.
-
-@:param trcontainer Array to append to
-@:param p1 point1
-@:param p2 point2
-@:param p3 point3
-@:param ccw Modifies how the triangle points are added to the object. 
-"""
-
-
 def appendtriangle(trcontainer, p1, p2, p3, ccw: bool):
+    """
+    Creates a triangle object and appends it to the given array. Its important for the direction of the triangle how the
+    points are added to it.
+
+    @:param trcontainer Array to append to
+    @:param p1 point1
+    @:param p2 point2
+    @:param p3 point3
+    @:param ccw Modifies how the triangle points are added to the object.
+    """
+
     if ccw:
         nvec = calc_triangle_normal(p1, p2, p3)
         trcontainer.append(Triangle(p1, p2, p3, nvec['x'], nvec['y'], nvec['z']))
@@ -149,16 +143,15 @@ def appendtriangle(trcontainer, p1, p2, p3, ccw: bool):
         trcontainer.append(Triangle(p3, p2, p1, nvec['x'], nvec['y'], nvec['z']))
 
 
-"""
-Maps a string to a distance in degree between the outer points of the cylinder
-=> Lower distance = more points generated
-
-@:param ql String which represents choosen quality of the stl file
-@:return int which represents the distance between outer points of the cylinder sides
-"""
-
-
 def qualitytodeg(ql):
+    """
+    Maps a string to a distance in degree between the outer points of the cylinder
+    => Lower distance = more points generated
+
+    @:param ql String which represents choosen quality of the stl file
+    @:return int which represents the distance between outer points of the cylinder sides
+    """
+
     mapper = {
         "ultrahigh": 1,
         "high": 10,
@@ -173,9 +166,6 @@ def qualitytodeg(ql):
         return 30
 
 
-"""
-Main
-"""
 if __name__ == "__main__":
     argparser = argparse.ArgumentParser()
     argparser.add_argument('-rl', '--lower-radius', required=True)
